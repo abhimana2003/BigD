@@ -13,12 +13,12 @@ with st.form("profile_form"):
 
     # Select boxes
     gender = st.selectbox("Gender", ["female", "male", "other"])
-    goal = st.selectbox("Goal", ["weight loss", "muscle gain", "maintenance", "heart healthy", "low sodium", "high protein", "gluten free"])
-    dietary = st.multiselect("Dietary Preferences", ["vegetarian", "vegan", "halal", "kosher", "pescaterian", "low carb", "keto"])
+    goal = st.selectbox("Goal", ["weight loss", "maintenance", "high protein", "gluten free"])
+    dietary = st.multiselect("Dietary Preferences", ["vegetarian", "vegan", "pescaterian", "low carb", "keto"])
     allergies = st.multiselect("Allergies", ["nuts", "dairy", "gluten", "soy", "eggs"])
-    medical = st.multiselect("Medical Conditions", ["diabetes", "hypertension", "celiac", "high cholesterol", "obesity", "heart disease"])
+    medical = st.multiselect("Medical Conditions", ["diabetes", "hypertension", "celiac", "high cholesterol"])
     budget = st.selectbox("Budget Level", ["low", "medium", "high"])
-    cooking_time = st.selectbox("Cooking Time", ["short", "medium", "long"])
+    cooking_time = st.selectbox("Cooking Time", ["short (<30 mins)", "medium (30-60 min)", "long(>60 mins)"])
 
     submitted = st.form_submit_button("Submit Profile")
 
