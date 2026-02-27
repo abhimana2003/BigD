@@ -27,25 +27,26 @@ with st.form("profile_form"):
     submitted = st.form_submit_button("Submit Profile")
 
 if submitted:
-    # Build payload
     payload = {
         "age": int(age),
-        "height_cm": float(height),
-        "weight_kg": float(weight),
+
+        # match new US-unit schema
+        "height_feet": int(heightFt),
+        "height_inches": int(heightIn),
+        "weight_lbs": float(weight),
+
         "gender": gender,
         "goal": goal,
-        "dietary_preferences": dietary if dietary else [],
-        "allergies": allergies if allergies else [],
-        "medical_conditions": medical if medical else [],
+        "dietary_preferences": dietary or [],
+        "allergies": allergies or [],
+        "medical_conditions": medical or [],
         "budget_level": budget,
         "cooking_time": cooking_time,
     }
 
     try:
-        # POST to FastAPI backend
         r = requests.post(API_URL, json=payload)
         r.raise_for_status()
         st.success("Profile saved successfully!")
     except requests.exceptions.HTTPError as e:
-        # Show full error message
         st.error(f"Failed to save profile: {e} - {r.text}")
