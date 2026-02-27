@@ -21,8 +21,8 @@ def random_user_profile():
     return {
         "age": random.randint(18, 70),
         "height_inches": round(random.uniform(0, 11), 1),
-        "heigh_feet": random.randint(3, 7),
-        "weight_lb": round(random.uniform(40, 1000), 1),
+        "height_feet": random.randint(3, 7),
+        "weight": round(random.uniform(40, 1000), 1),
         "gender": random.choice(GENDERS),
         "goal": random.choice(GOALS),
         "dietary_preferences": random_subset(DIETARY_OPTIONS),

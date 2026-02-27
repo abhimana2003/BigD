@@ -33,14 +33,14 @@ if submitted:
         # match new US-unit schema
         "height_feet": int(heightFt),
         "height_inches": int(heightIn),
-        "weight_lbs": float(weight),
+        "weight": float(weight),
 
         "gender": gender,
         "goal": goal,
         "dietary_preferences": dietary or [],
         "allergies": allergies or [],
         "medical_conditions": medical or [],
-        "budget_level": budget,
+        "budget_level": float(budget),
         "cooking_time": cooking_time,
     }
 

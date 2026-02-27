@@ -8,7 +8,7 @@ class UserProfile(Base):
     age = Column(Integer, nullable=False)
     height_inches = Column(Integer, nullable=False)
     height_feet = Column(Integer, nullable=False)
-    weight_lb = Column(Float, nullable=False)
+    weight = Column(Float, nullable=False)
     gender = Column(String, nullable=False)
 
     goal = Column(String, nullable=False)
