@@ -28,7 +28,7 @@ def random_user_profile():
         "dietary_preferences": random_subset(DIETARY_OPTIONS),
         "allergies": random_subset(ALLERGIES),
         "medical_conditions": random_subset(MEDICAL_CONDITIONS),
-        "budget_level": random.choice(BUDGET_LEVELS),
+        "budget_level": round(random.uniform(20, 500), 1),
         "cooking_time": random.choice(COOKING_TIMES),
     }
 

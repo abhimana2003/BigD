@@ -15,7 +15,7 @@ with st.form("profile_form"):
         heightFt = st.number_input("Feet", min_value=1, max_value=8, value=5)
     with inches: 
         heightIn = st.number_input("Height (inches)", min_value=0, max_value=11, value=0)
-    weight = st.number_input("Weight (lbs)", min_value=40.0, max_value=1000.0, value=0)
+    weight = st.number_input("Weight (lbs)", min_value=40.0, max_value=1000.0, value=40.0)
     gender = st.selectbox("Gender", ["Female", "Male", "Other"])
     goal = st.selectbox("Goal", ["Weight Loss", "Maintenance", "High Protein", "Gluten Free"])
     dietary = st.multiselect("Dietary Preferences", ["Vegetarian", "Vegan", "Pescaterian", "Low Carb", "Keto"])
