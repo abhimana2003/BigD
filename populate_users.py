@@ -1,65 +1,63 @@
 import random
-import requests
+from database import SessionLocal, Base, engine
+from models import UserProfile, Recipe
 
-API_URL = "http://localhost:8000/profiles"
+Base.metadata.create_all(bind=engine)
 
+GENDERS = ["female", "male", "other"]
+GOALS = ["weight loss", "maintenance", "high protein", "gluten free"]
+DIETARY_OPTIONS = ["vegetarian", "vegan", "pescaterian", "low carb", "keto"]
+ALLERGIES = ["nuts", "dairy", "gluten", "soy", "eggs"]
+MEDICAL_CONDITIONS = ["diabetes", "hypertension", "celiac", "high cholesterol"]
+BUDGET_LEVELS = ["low", "medium", "high"]
+COOKING_TIMES = ["short (<30 mins)", "medium (30-60 min)", "long(>60 mins)"]
 
-genders = ["female", "male", "other"]
-
-goals = ["weight loss", "maintenance", "high protein", "gluten free"]
-
-dietary_options = ["vegetarian", "vegan", "pescaterian", "low carb", "keto"]
-
-allergy_options = ["nuts", "dairy", "gluten", "soy", "eggs"]
-
-medical_options = ["diabetes", "hypertension", "celiac", "high cholesterol"]
-
-budget_levels = ["low", "medium", "high"]
-
-cooking_times = [
-    "short (<30 mins)",
-    "medium (30-60 min)",
-    "long(>60 mins)"
-]
-
+NUM_USERS = 20  
 
 def random_subset(options):
-    """Return a random subset (possibly empty)."""
-    k = random.randint(0, len(options))
-    return random.sample(options, k)
+    return random.sample(options, k=random.randint(0, len(options)))
 
-
-def generate_random_user():
+def random_user_profile():
     return {
-        "age": random.randint(18, 75),
-        "height_cm": round(random.uniform(150, 195), 1),
-        "weight_kg": round(random.uniform(50, 110), 1),
-        "gender": random.choice(genders),
-        "goal": random.choice(goals),
-        "dietary_preferences": random_subset(dietary_options),
-        "allergies": random_subset(allergy_options),
-        "medical_conditions": random_subset(medical_options),
-        "budget_level": random.choice(budget_levels),
-        "cooking_time": random.choice(cooking_times),
+        "age": random.randint(18, 70),
+        "height_inches": round(random.uniform(0, 11), 1),
+        "heigh_feet": random.randint(3, 7),
+        "weight_lb": round(random.uniform(40, 1000), 1),
+        "gender": random.choice(GENDERS),
+        "goal": random.choice(GOALS),
+        "dietary_preferences": random_subset(DIETARY_OPTIONS),
+        "allergies": random_subset(ALLERGIES),
+        "medical_conditions": random_subset(MEDICAL_CONDITIONS),
+        "budget_level": random.choice(BUDGET_LEVELS),
+        "cooking_time": random.choice(COOKING_TIMES),
     }
 
 
-def seed_users(n=20):
-    success = 0
+def populate_users(num_users=NUM_USERS):
+    db = SessionLocal()
 
-    for i in range(n):
-        user = generate_random_user()
+    existing = db.query(UserProfile).count()
+    if existing > 0:
+        print(f"UserProfile table already has {existing} rows. Skipping population.")
+        db.close()
+        return
 
-        try:
-            r = requests.post(API_URL, json=user)
-            r.raise_for_status()
-            success += 1
-            print(f"Created user {i+1}")
-        except requests.exceptions.HTTPError as e:
-            print(f"Failed user {i+1}: {r.text}")
+    user_objects = []
+    all_recipes = db.query(Recipe).all()  
+    for _ in range(num_users):
+        profile_data = random_user_profile()
+        user = UserProfile(**profile_data)
 
-    print(f"\nFinished. Successfully created {success}/{n} users.")
+        if all_recipes:
+            user.favorite_recipes = random.sample(all_recipes, k=min(3, len(all_recipes)))
+
+        user_objects.append(user)
+
+    db.bulk_save_objects(user_objects)
+    db.commit()
+    db.close()
+    print(f"Populated {len(user_objects)} random users.")
 
 
 if __name__ == "__main__":
-    seed_users(30)  
+    populate_users()

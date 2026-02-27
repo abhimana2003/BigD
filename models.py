@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ARRAY
+from sqlalchemy import Column, Integer, String, Float, ARRAY, JSON
 from database import Base
 
 class UserProfile(Base):
@@ -6,8 +6,9 @@ class UserProfile(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     age = Column(Integer, nullable=False)
-    height_cm = Column(Float, nullable=False)
-    weight_kg = Column(Float, nullable=False)
+    height_inches = Column(Integer, nullable=False)
+    height_feet = Column(Integer, nullable=False)
+    weight_lb = Column(Float, nullable=False)
     gender = Column(String, nullable=False)
 
     goal = Column(String, nullable=False)
@@ -17,3 +18,22 @@ class UserProfile(Base):
 
     budget_level = Column(String)
     cooking_time = Column(String)
+
+class Recipe(Base):
+    __tablename__ = "recipes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    recipe_name = Column(String, nullable=False)
+    prep_time = Column(Integer)
+    cook_time = Column(Integer)
+    total_time = Column(Integer)
+    servings = Column(Integer)
+    ingredients = Column(JSON)
+    directions = Column(JSON)
+    rating = Column(Float)
+    url = Column(String)
+    cuisine_path = Column(String)
+    nutrition = Column(JSON)
+    timing = Column(JSON)
+    dietary_tags = Column(JSON)
+    estimated_cost = Column(Float)
